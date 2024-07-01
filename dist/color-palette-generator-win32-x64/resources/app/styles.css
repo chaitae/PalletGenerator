@@ -2,12 +2,15 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #f0f0f0;
+    color: #f0f0f0;
+    -webkit-text-stroke-width: .5px;
+    -webkit-text-stroke-color: black;
 }
 
 .container {
     margin: 50px auto;
     max-width: 600px;
-    background-color: #fff;
+    background-color: #222831;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -37,4 +40,12 @@ body {
     justify-content: center;
     color: #fff;
     font-weight: bold;
+}
+#paletteCanvas {
+    display: none;
+    margin-top: 20px;
+}
+
+#saveImageBtn {
+    margin-top: 10px;
 }

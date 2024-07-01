@@ -1,19 +1,19 @@
 {
-    "name": "palletgenerator",
+    "name": "color-palette-generator",
     "version": "1.0.0",
+    "description": "A color palette generator application",
     "main": "main.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "electron .",
+        "build": "electron-packager . color-palette-generator --platform=win32 --arch=x64 --out=dist --overwrite --ignore=\\.vs",
+        "dist": "electron-installer-windows --src dist/color-palette-generator-win32-x64/ --dest dist/installer/ --config config.json"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "description": "",
     "devDependencies": {
-        "electron": "^31.1.0"
+        "electron": "^24.1.0",
+        "electron-installer-windows": "^3.0.0",
+        "electron-packager": "^17.1.1"
     },
-
-    "scripts": {
-        "start": "electron ."
+    "dependencies": {
+        "chroma-js": "^2.4.2"
     }
 }

@@ -1,0 +1,9 @@
+{
+    "name": "Color Palette Generator",
+    "description": "A color palette generator application",
+    "version": "1.0.0",
+    "author": "Your Name",
+    "exe": "color-palette-generator.exe",
+    "setupIcon": "path/to/your/icon.ico",
+    "outputDirectory": "dist/installer"
+}
