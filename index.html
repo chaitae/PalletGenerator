@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
     <div class="container">
         <h1>Color Palette Generator</h1>
         <input type="color" id="colorPicker" value="#3498db">
@@ -20,6 +21,8 @@
         </div>
         <button id="generateBtn">Generate Palette</button>
         <div id="palette" class="palette"></div>
+        <canvas id="paletteCanvas" width="500" height="100" style="display: none;"></canvas>
+        <button id="saveImageBtn">Save Palette Image</button>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
     <script src="main.js"></script>

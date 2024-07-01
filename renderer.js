@@ -2,6 +2,7 @@ document.getElementById('generateBtn').addEventListener('click', generatePalette
 document.getElementById('hueSlider').addEventListener('input', updateHueValue);
 document.getElementById('saturationSlider').addEventListener('input', updateSaturationValue);
 document.getElementById('luminanceSlider').addEventListener('input', updateLuminanceValue);
+document.getElementById('saveImageBtn').addEventListener('click', savePaletteImage);
 
 function generatePalette() {
     const colorPicker = document.getElementById('colorPicker');
@@ -32,6 +33,8 @@ function generatePalette() {
         colorDiv.innerText = jitteredColor;
         palette.appendChild(colorDiv);
     });
+
+    drawPaletteOnCanvas(Array.from(uniqueColors));
 }
 
 function jitterColor(color, hueJitter, saturationJitter, luminanceJitter) {
@@ -67,4 +70,32 @@ function updateSaturationValue() {
 function updateLuminanceValue() {
     const luminanceValue = document.getElementById('luminanceSlider').value;
     document.getElementById('luminanceValue').innerText = luminanceValue;
+}
+
+function drawPaletteOnCanvas(colors) {
+    const canvas = document.getElementById('paletteCanvas');
+    const ctx = canvas.getContext('2d');
+    const colorWidth = canvas.width / colors.length;
+
+    colors.forEach((color, index) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(index * colorWidth, 0, colorWidth, canvas.height);
+    });
+}
+
+function savePaletteImage() {
+    const canvas = document.getElementById('paletteCanvas');
+    canvas.toBlob(async (blob) => {
+        try {
+            await navigator.clipboard.write([
+                new ClipboardItem({
+                    'image/png': blob
+                })
+            ]);
+            alert('Palette image copied to clipboard!');
+        } catch (err) {
+            console.error('Failed to copy image: ', err);
+            alert('Failed to copy image.');
+        }
+    });
 }

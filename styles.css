@@ -41,3 +41,11 @@ body {
     color: #fff;
     font-weight: bold;
 }
+#paletteCanvas {
+    display: none;
+    margin-top: 20px;
+}
+
+#saveImageBtn {
+    margin-top: 10px;
+}
