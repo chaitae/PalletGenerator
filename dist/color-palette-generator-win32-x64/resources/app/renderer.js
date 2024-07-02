@@ -2,11 +2,17 @@ document.getElementById('generateBtn').addEventListener('click', generatePalette
 document.getElementById('hueSlider').addEventListener('input', updateHueValue);
 document.getElementById('saturationSlider').addEventListener('input', updateSaturationValue);
 document.getElementById('luminanceSlider').addEventListener('input', updateLuminanceValue);
-document.getElementById('saveImageBtn').addEventListener('click', savePaletteImage);
+document.getElementById('copyImageBtn').addEventListener('click', copyPaletteImage);
+document.getElementById('generateIndividualPalettesBtn').addEventListener('click', generateIndividualPalettes);
 
 function generatePalette() {
+    generateColorsFromInitialColor(true);
+}
+
+function generateColorsFromInitialColor(useInitialColorForSaturation) {
     const colorPicker = document.getElementById('colorPicker');
     const initialColor = colorPicker.value;
+    const paletteSize = parseInt(document.getElementById('paletteSize').value);
     const palette = document.getElementById('palette');
     palette.innerHTML = '';
 
@@ -14,47 +20,41 @@ function generatePalette() {
     const saturationJitter = parseFloat(document.getElementById('saturationSlider').value);
     const luminanceJitter = parseFloat(document.getElementById('luminanceSlider').value);
 
-    const colors = chroma.scale([initialColor, '#ffffff']).mode('lab').colors(5);
-    const uniqueColors = new Set();
-
-    colors.forEach(color => {
-        let jitteredColor = jitterColor(color, hueJitter, saturationJitter, luminanceJitter);
-
-        // Regenerate the color if it already exists in the palette
-        while (uniqueColors.has(jitteredColor)) {
-            jitteredColor = jitterColor(color, hueJitter, saturationJitter, luminanceJitter);
+    for (let i = 0; i < paletteSize; i++) {
+        let hue, saturation, luminance;
+        if (i === 0) {
+            hue = chroma(initialColor).get('hsl.h');
+            saturation = 1; // Maximum saturation
+            luminance = chroma(initialColor).get('hsl.l');
+        } else {
+            hue = (chroma(initialColor).get('hsl.h') + getRandomInt(-hueJitter, hueJitter)) % 360;
+            saturation = clamp(getRandomFloat(0, 1), 0, 1); // Random saturation between 0 and 1
+            luminance = clamp(getRandomFloat(0, 1), 0, 1); // Random luminance between 0 and 1
         }
 
-        uniqueColors.add(jitteredColor);
+        let color = chroma.hsl(hue, saturation, luminance).hex();
 
         const colorDiv = document.createElement('div');
         colorDiv.className = 'color';
-        colorDiv.style.backgroundColor = jitteredColor;
-        colorDiv.innerText = jitteredColor;
+        colorDiv.style.backgroundColor = color;
+        colorDiv.innerText = color;
         palette.appendChild(colorDiv);
+    }
+
+    drawPaletteOnCanvas();
+}
+
+function drawPaletteOnCanvas() {
+    const canvas = document.getElementById('paletteCanvas');
+    const ctx = canvas.getContext('2d');
+    const paletteColors = document.querySelectorAll('.color');
+    const colorWidth = canvas.width / paletteColors.length;
+
+    paletteColors.forEach((colorDiv, index) => {
+        const color = colorDiv.style.backgroundColor;
+        ctx.fillStyle = color;
+        ctx.fillRect(index * colorWidth, 0, colorWidth, canvas.height);
     });
-
-    drawPaletteOnCanvas(Array.from(uniqueColors));
-}
-
-function jitterColor(color, hueJitter, saturationJitter, luminanceJitter) {
-    const hsl = chroma(color).hsl();
-    const jitteredHue = (hsl[0] + getRandomInt(-hueJitter, hueJitter)) % 360;
-    const jitteredSaturation = clamp(hsl[1] + getRandomFloat(-saturationJitter, saturationJitter), 0, 1);
-    const jitteredLuminance = clamp(hsl[2] + getRandomFloat(-luminanceJitter, luminanceJitter), 0, 1);
-    return chroma.hsl(jitteredHue, jitteredSaturation, jitteredLuminance).hex();
-}
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function getRandomFloat(min, max) {
-    return Math.random() * (max - min) + min;
-}
-
-function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
 }
 
 function updateHueValue() {
@@ -72,18 +72,7 @@ function updateLuminanceValue() {
     document.getElementById('luminanceValue').innerText = luminanceValue;
 }
 
-function drawPaletteOnCanvas(colors) {
-    const canvas = document.getElementById('paletteCanvas');
-    const ctx = canvas.getContext('2d');
-    const colorWidth = canvas.width / colors.length;
-
-    colors.forEach((color, index) => {
-        ctx.fillStyle = color;
-        ctx.fillRect(index * colorWidth, 0, colorWidth, canvas.height);
-    });
-}
-
-function savePaletteImage() {
+function copyPaletteImage() {
     const canvas = document.getElementById('paletteCanvas');
     canvas.toBlob(async (blob) => {
         try {
@@ -98,4 +87,16 @@ function savePaletteImage() {
             alert('Failed to copy image.');
         }
     });
+}
+
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomFloat(min, max) {
+    return Math.random() * (max - min) + min;
 }

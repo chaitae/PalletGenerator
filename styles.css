@@ -7,6 +7,32 @@ body {
     -webkit-text-stroke-color: black;
 }
 
+.row {
+    margin-bottom: 10px;
+}
+
+    .row label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+.palette-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center horizontally */
+    margin-bottom: 10px;
+}
+
+    .palette-controls input[type="number"] {
+        width: 50px;
+        text-align: center;
+        margin: 0 5px;
+    }
+
+    .palette-controls input[type="button"] {
+        width: 30px; /* Adjust width of +/- buttons */
+        margin: 0 2px; /* Adjust margin for spacing */
+    }
 .container {
     margin: 50px auto;
     max-width: 600px;
