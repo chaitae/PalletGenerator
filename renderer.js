@@ -205,6 +205,11 @@ function decreasePaletteSize() {
     if (lastColorDiv) {
         palette.removeChild(lastColorDiv);
     }
+    const paletteSizeInput = document.getElementById('paletteSize');
+    const currentPaletteSize = parseInt(paletteSizeInput.value);
+    const newPaletteSize = currentPaletteSize - 1;
+
+    paletteSizeInput.value = newPaletteSize;
 }
 
 // Function to increase palette size by adding a single swatch
@@ -226,7 +231,11 @@ function increasePaletteSize() {
     colorDiv.className = 'color';
     colorDiv.style.backgroundColor = color;
     colorDiv.innerText = color;
+    const paletteSizeInput = document.getElementById('paletteSize');
+    const currentPaletteSize = parseInt(paletteSizeInput.value);
+    const newPaletteSize = currentPaletteSize + 1;
 
+    paletteSizeInput.value = newPaletteSize;
     palette.appendChild(colorDiv);
 }
 function showCopyMessage() {
