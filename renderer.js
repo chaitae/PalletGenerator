@@ -41,11 +41,11 @@ function generatePalette() {
 function generateColors(initialColor, paletteSize, hueJitter, saturationJitter, luminanceJitter, interpolationMethod) {
     const colors = [];
     const initialHue = chroma(initialColor).get('hsl.h');
-    const initialSaturation = 1;
+    const initialSaturation = chroma(initialColor).get('hsl.s');
     const initialLuminance = chroma(initialColor).get('hsl.l');
 
     const minSaturation = 0.5;
-    const maxSaturation = 1;
+    const maxSaturation = initialSaturation;
 
     const interpolate = getInterpolationFunction(interpolationMethod);
 
