@@ -4,8 +4,39 @@ document.getElementById('saturationSlider').addEventListener('input', updateSatu
 document.getElementById('luminanceSlider').addEventListener('input', updateLuminanceValue);
 document.getElementById('interpolation').addEventListener('change', updatePaletteInterpolation);
 document.getElementById('copyImageBtn').addEventListener('click', savePaletteImage);
-document.getElementById('decreasePaletteSize').addEventListener('click', decreasePaletteSize);
-document.getElementById('increasePaletteSize').addEventListener('click', increasePaletteSize);
+document.getElementById('blendBtn').addEventListener('click', blendColors);
+document.getElementById('mode').addEventListener('change', toggleMode);
+
+// Initial setup to toggle mode
+toggleMode();
+
+function toggleMode() {
+    const mode = document.getElementById('mode').value;
+    const paletteControls = document.getElementById('paletteControls');
+    const blendControls = document.getElementById('blendControls');
+    if (mode === 'palette') {
+        paletteControls.style.display = 'block';
+        blendControls.style.display = 'none';
+        document.getElementById('decreasePaletteSize').addEventListener('click', decreasePaletteSize);
+        document.getElementById('increasePaletteSize').addEventListener('click', increasePaletteSize);
+    } else {
+        //can't seem to find decreasepallet size blend?
+        paletteControls.style.display = 'none';
+        blendControls.style.display = 'block';
+        document.getElementById('decreasePaletteSizeBlend').addEventListener('click', decreasePaletteSizeBlend);
+        document.getElementById('increasePaletteSizeBlend').addEventListener('click', increasePaletteSizeBlend);
+
+
+    }
+}
+
+function blendColors() {
+    const color1 = document.getElementById('color1').value;
+    const color2 = document.getElementById('color2').value;
+
+    const colors = chroma.scale([color1, color2]).mode('lab').colors(7);
+    updatePaletteUI(colors);
+}
 
 let currentPaletteColors = [];
 
@@ -198,6 +229,7 @@ function savePaletteImage() {
         }
     });
 }
+
 // Function to decrease palette size by removing the last swatch
 function decreasePaletteSize() {
     const palette = document.getElementById('palette');
@@ -238,6 +270,49 @@ function increasePaletteSize() {
     paletteSizeInput.value = newPaletteSize;
     palette.appendChild(colorDiv);
 }
+
+// Function to decrease palette size by removing the last swatch in blend mode
+function decreasePaletteSizeBlend() {
+    const palette = document.getElementById('palette');
+    const lastColorDiv = palette.lastElementChild;
+    if (lastColorDiv) {
+        palette.removeChild(lastColorDiv);
+    }
+    const paletteSizeInput = document.getElementById('blendPaletteSize');
+    const currentPaletteSize = parseInt(paletteSizeInput.value);
+    const newPaletteSize = currentPaletteSize - 1;
+
+    paletteSizeInput.value = newPaletteSize;
+}
+
+// Function to increase palette size by adding a single swatch in blend mode
+function increasePaletteSizeBlend() {
+
+    const palette = document.getElementById('palette');
+    const initialColor = document.getElementById('colorPicker').value;
+
+    const hueJitter = parseInt(document.getElementById('hueSlider').value);
+    const saturationJitter = parseFloat(document.getElementById('saturationSlider').value);
+    const luminanceJitter = parseFloat(document.getElementById('luminanceSlider').value);
+
+    let hue = (chroma(initialColor).get('hsl.h') + getRandomInt(-hueJitter, hueJitter)) % 360;
+    let saturation = clamp(getRandomFloat(0, 1), 0, 1);
+    let luminance = clamp(getRandomFloat(0, 1), 0, 1);
+
+    let color = chroma.hsl(hue, saturation, luminance).hex();
+
+    const colorDiv = document.createElement('div');
+    colorDiv.className = 'color';
+    colorDiv.style.backgroundColor = color;
+    colorDiv.innerText = color;
+    const paletteSizeInput = document.getElementById('blendPaletteSize');
+    const currentPaletteSize = parseInt(paletteSizeInput.value);
+    const newPaletteSize = currentPaletteSize + 1;
+
+    paletteSizeInput.value = newPaletteSize;
+    palette.appendChild(colorDiv);
+}
+
 function showCopyMessage() {
     const copyMessage = document.getElementById('copyMessage');
     copyMessage.classList.remove('hidden');
