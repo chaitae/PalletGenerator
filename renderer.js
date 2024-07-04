@@ -145,7 +145,7 @@ function updatePaletteUI(colors) {
         const colorDiv = document.createElement('div');
         colorDiv.className = 'color';
         colorDiv.style.backgroundColor = color;
-        colorDiv.innerText = color;
+        //colorDiv.innerText = color;
         palette.appendChild(colorDiv);
     });
 
@@ -286,13 +286,14 @@ function increasePaletteSize() {
     const colorDiv = document.createElement('div');
     colorDiv.className = 'color';
     colorDiv.style.backgroundColor = color;
-    colorDiv.innerText = color;
+    //colorDiv.innerText = color;
     const paletteSizeInput = document.getElementById('paletteSize');
     const currentPaletteSize = parseInt(paletteSizeInput.value);
     const newPaletteSize = currentPaletteSize + 1;
 
     paletteSizeInput.value = newPaletteSize;
     palette.appendChild(colorDiv);
+    generatePalette();
 }
 
 // Function to decrease palette size by removing the last swatch in blend mode
