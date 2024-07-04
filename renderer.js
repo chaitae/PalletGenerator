@@ -8,6 +8,10 @@ document.getElementById('copyImageBtn').addEventListener('click', savePaletteIma
 document.getElementById('blendBtn').addEventListener('click', blendColors);
 document.getElementById('mode').addEventListener('change', toggleMode);
 
+document.getElementById('colorPicker').addEventListener('input', onColorChange);
+document.getElementById('color1').addEventListener('input', onColorChange);
+document.getElementById('color2').addEventListener('input', onColorChange);
+
 // Initial setup to toggle mode
 toggleMode();
 
@@ -29,14 +33,21 @@ function toggleMode() {
 
 
     }
-}
 
+}
+function onColorChange(event) {
+    const newColor = event.target.value;
+    // Call your function to update the palette or blend colors here
+    if (document.getElementById('mode').value === 'palette') {
+        generatePalette(); // if in palette mode, regenerate palette
+    } else {
+        blendColors(); // if in blend mode, blend colors
+    }
+}
 function blendColors() {
     const color1 = document.getElementById('color1').value;
     const color2 = document.getElementById('color2').value;
     const paletteSize = parseInt(document.getElementById('blendPaletteSize').value);
-    //var mixed = mixbox.lerp(color1, color2,);
-    //const colors = chroma.scale([color1, color2]).mode('lab').colors(paletteSize);
     const color1Mixbox = color1;
     const color2Mixbox = color2;
 
