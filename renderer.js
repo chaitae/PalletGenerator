@@ -34,7 +34,7 @@ function toggleMode() {
 function blendColors() {
     const color1 = document.getElementById('color1').value;
     const color2 = document.getElementById('color2').value;
-    const paletteSize = parseInt(document.getElementById('paletteSize').value);
+    const paletteSize = parseInt(document.getElementById('blendPaletteSize').value);
     //var mixed = mixbox.lerp(color1, color2,);
     //const colors = chroma.scale([color1, color2]).mode('lab').colors(paletteSize);
     const color1Mixbox = color1;
@@ -296,6 +296,7 @@ function decreasePaletteSizeBlend() {
     const newPaletteSize = currentPaletteSize - 1;
 
     paletteSizeInput.value = newPaletteSize;
+    blendColors();
 }
 
 // Function to increase palette size by adding a single swatch in blend mode
@@ -324,6 +325,7 @@ function increasePaletteSizeBlend() {
 
     paletteSizeInput.value = newPaletteSize;
     palette.appendChild(colorDiv);
+    blendColors();
 }
 
 function showCopyMessage() {
