@@ -1,3 +1,4 @@
+
 document.getElementById('generateBtn').addEventListener('click', generatePalette);
 document.getElementById('hueSlider').addEventListener('input', updateHueValue);
 document.getElementById('saturationSlider').addEventListener('input', updateSaturationValue);
@@ -33,8 +34,20 @@ function toggleMode() {
 function blendColors() {
     const color1 = document.getElementById('color1').value;
     const color2 = document.getElementById('color2').value;
+    const paletteSize = parseInt(document.getElementById('paletteSize').value);
+    //var mixed = mixbox.lerp(color1, color2,);
+    //const colors = chroma.scale([color1, color2]).mode('lab').colors(paletteSize);
+    const color1Mixbox = color1;
+    const color2Mixbox = color2;
 
-    const colors = chroma.scale([color1, color2]).mode('lab').colors(7);
+    const colors = [];
+    for (let i = 0; i < paletteSize; i++) {
+        const blendRatio = i / (paletteSize - 1);
+        const blendedColor = mixbox.lerp(color1Mixbox, color2Mixbox, blendRatio);
+        colors.push(blendedColor);
+    }
+
+    //updatePaletteUI(colors);
     updatePaletteUI(colors);
 }
 

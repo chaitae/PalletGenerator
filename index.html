@@ -54,7 +54,7 @@
             <label for="color2">Color 2:</label>
             <input type="color" id="color2" value="#0000ff">
             <div class="palette-size-container">
-                <label for="blendPaletteSize">Blend Palette Size:</label>
+                <label for="blendPaletteSize">Palette Size:</label>
                 <button id="decreasePaletteSizeBlend">-</button>
                 <input type="number" id="blendPaletteSize" value="7" min="2" max="20" readonly>
                 <button id="increasePaletteSizeBlend">+</button>
@@ -67,6 +67,7 @@
         <canvas id="paletteCanvas" width="500" height="100" style="display: none;"></canvas>
         <button id="copyImageBtn">Copy Palette Image</button>
     </div>
+    <script src="https://scrtwpns.com/mixbox.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
     <script src="main.js"></script>
     <script src="renderer.js"></script>
